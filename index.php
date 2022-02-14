@@ -23,12 +23,6 @@
                 <div class="view-box__hp-progress"></div>
             </div>
         </div>
-        <!-- <div class="view-box__rocket-wrapper view-box__rocket-wrapper_twice">
-            <img class="rocket view-box__rocket" src="" alt="starship">
-            <div class="view-box__hp">
-                <div class="view-box__hp-progress"></div>
-            </div>
-        </div> -->
     </div>
     <script src="main.js"></script>
 </body>

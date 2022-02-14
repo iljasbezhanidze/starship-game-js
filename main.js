@@ -98,7 +98,6 @@ let rocketOptions = {
     selector: '.rocket', //селектор ракеты
     img: 'rocket.gif', //скин ракеты
     wrapper: document.querySelector('.view-box__rocket-wrapper'), //селектор обертки ракеты
-    wrapper2: document.querySelector('.view-box__rocket-wrapper'), //селектор обертки ракеты
     controlON: true, //включить - выключить управление
 }
 
@@ -138,35 +137,36 @@ const controllActive = (() => {
 
 //CONDITIONS
 const hpOptions = {
-        maxHp: 100,
-        damage: 10,
-    };
+    maxHp: 100,
+    damage: 10,
+};
 
-    (function hit() {
-        setInterval(() => {
-            const starshipWidth = 200
-            let currentHp = hpOptions.maxHp
-            let hpBar = document.querySelector('.view-box__hp-progress')
-            hpBar.style.width = currentHp + '%'
+(function hit() {
+    setInterval(() => {
+        const starshipWidth = 200
+        let currentHp = hpOptions.maxHp
+        let hpBar = document.querySelector('.view-box__hp-progress')
+        hpBar.style.width = currentHp + '%'
 
-            optionsMeteor.allCurrentMeteors.forEach(el => {
-                let coorShip = starShip(rocketOptions.selector)
-                if (el.getBoundingClientRect().y >= coorShip.getBoundingClientRect().y && (el.getBoundingClientRect().x > coorShip.getBoundingClientRect().x && el.getBoundingClientRect().x < coorShip.getBoundingClientRect().x + starshipWidth)) {
-                    el.querySelector('img').src = 'boom.gif'
-                    if(!el.isDamaged) {
-                        console.log('DAMAGE!!!')
-                        console.log(el.getBoundingClientRect().y)
-                        el.isDamaged = true
-                        damage()
-                        if(gameOver()) alert('Game Over!!')
+        optionsMeteor.allCurrentMeteors.forEach(el => {
+            let coorShip = starShip(rocketOptions.selector)
+            if (el.getBoundingClientRect().y >= coorShip.getBoundingClientRect().y && (el.getBoundingClientRect().x > coorShip.getBoundingClientRect().x && el.getBoundingClientRect().x < coorShip.getBoundingClientRect().x + starshipWidth)) {
+                el.querySelector('img').src = 'boom.gif'
+                if (!el.isDamaged) {
+                    el.isDamaged = true
+                    damage()
+                    if (gameOver()) {
+                       let dialog =  confirm('Game Over !!! \n Sterted a new game?')
+                       if(dialog) restartGame()
                     }
-                    setTimeout(() => {
-                        el.remove()
-                    }, 1000);
                 }
-            });
-        }, 10);
-    })();
+                setTimeout(() => {
+                    el.remove()
+                }, 1000);
+            }
+        });
+    }, 10);
+})();
 
 function damage() {
     hpOptions.maxHp = hpOptions.maxHp - hpOptions.damage
@@ -175,3 +175,31 @@ function damage() {
 function gameOver() {
     return hpOptions.maxHp <= 0
 }
+function restartGame() {
+    hpOptions.maxHp = 100
+}
+
+
+//FIRE
+function createBlast() {
+    document.addEventListener('keydown', event => {
+        const scene = document.querySelector('.view-box')
+        let positionShipX = starShip(rocketOptions.selector).getBoundingClientRect().x
+        let positionShipY = starShip(rocketOptions.selector).getBoundingClientRect().y
+        if (event.keyCode == "32") {
+            let blast = document.createElement('div')
+            scene.appendChild(blast)
+            blast.className = 'blast'
+            blast.style.cssText = `
+            height: 30px;
+            width: 10px;
+            background-color: blue;
+            border-radius: 10px;
+            position: absolute;
+            transition: all 3s;
+            left: ${positionShipX + starShip(rocketOptions.selector).clientWidth / 2}px;
+            top: ${positionShipY + starShip(rocketOptions.selector).clientHeight / 2}px`;
+        }
+    })
+}
+createBlast()
