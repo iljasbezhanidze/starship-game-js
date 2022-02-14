@@ -1,0 +1,80 @@
+:root {
+    --meteorit-height: 500px; 
+    --animation-speed: 5s;
+    --finish-position: calc(100% + var(--meteorit-height));
+}
+body {
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.view-box {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.view-box__rocket-wrapper {
+    position: absolute;
+    width: 120px;
+    height: 200px;
+    overflow: hidden;
+    bottom: 10%;;
+    transform: translate3d(-50%, 0, 0);
+    animation-iteration-count: infinite;
+    /* transition: all .1s; */
+}
+
+.rocket {
+    object-fit: cover;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate3d(-50%, -50%, 0);
+}
+
+.view-box__meteor-wrapper {
+    position: absolute;
+    top: 0;
+    width: 300px;
+    height: var(--meteorit-height);
+    transform: rotate(0);
+    animation: drop  var(--animation-speed) ease-in-out;
+}
+
+.meteor {
+    transform: rotate(45deg);
+    object-fit: cover;
+    position: absolute;
+    max-width: 100%;
+    max-height: 120%;
+}
+
+@keyframes drop {
+    from {
+        top: -25%;
+    }
+
+    to {
+        top: var(--finish-position);
+    }
+}
+
+.view-box__counter {
+    position: absolute;
+    right: 5%;
+    top: 5%;
+    font-size: 36px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 900;
+}
+
+.empty {
+    position: absolute;
+    left: 0;
+    bottom: 10%;
+    width: 150px;
+    height: 200px;
+}
